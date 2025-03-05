@@ -6,8 +6,10 @@ set -euxo pipefail
 
 # Variables
 REPO_URL="https://github.com/oldmxnk/k8s-vagrant"
+API_URL="https://api.github.com/repos/oldmxnk/k8s-vagrant"
 
 GITHUB_TOKEN="your_personal_access_token"
+
 
 RUNNER_NAME="self-hosted-k8s-runner"
 RUNNER_LABELS="self-hosted,Linux,K8s"
@@ -29,9 +31,10 @@ curl -o actions-runner-linux-x64-2.322.0.tar.gz -L https://github.com/actions/ru
 # Extract the installer
 tar xzf ./actions-runner-linux-x64-2.322.0.tar.gz
 chown -R vagrant:vagrant /home/vagrant/actions-runner 
+rm -f ./actions-runner-linux-x64-2.322.0.tar.gz
 
 # Get the runner token from GitHub
-RUNNER_TOKEN=$(curl -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" "$REPO_URL/actions/runners/registration-token" | jq -r .token)
+RUNNER_TOKEN=$(curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" "$API_URL/actions/runners/registration-token" | jq -e -r .token)
 
 #
 # Configure Runner
