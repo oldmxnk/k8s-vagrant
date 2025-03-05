@@ -4,6 +4,17 @@
 
 set -euxo pipefail
 
+# Variables
+REPO_URL="https://github.com/oldmxnk/k8s-vagrant"
+
+GITHUB_TOKEN="your_personal_access_token"
+
+RUNNER_NAME="self-hosted-k8s-runner"
+RUNNER_LABELS="self-hosted,Linux,K8s"
+
+# Install dependencies
+sudo apt-get install -y curl jq
+
 #
 # Install Runner
 #
@@ -11,18 +22,24 @@ set -euxo pipefail
 # Create a folder
 mkdir actions-runner 
 cd actions-runner
+
 # Download the latest runner package
 curl -o actions-runner-linux-x64-2.322.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.322.0/actions-runner-linux-x64-2.322.0.tar.gz
+
 # Extract the installer
 tar xzf ./actions-runner-linux-x64-2.322.0.tar.gz
 chown -R vagrant:vagrant /home/vagrant/actions-runner 
+
+# Get the runner token from GitHub
+RUNNER_TOKEN=$(curl -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" "$REPO_URL/actions/runners/registration-token" | jq -r .token)
 
 #
 # Configure Runner
 #
 
 # Create the runner and start the configuration experience
-sudo -u vagrant ./config.sh --unattended --replace --url https://github.com/oldmxnk/k8s-vagrant --token BGB5O5SVAVF2LQ6U26V3FQLHY5JV2
+sudo -u vagrant ./config.sh --unattended --replace --url $REPO_URL --token $RUNNER_TOKEN --name $RUNNER_NAME --labels $RUNNER_LABELS
+
 # Last step, install service and start it
 sudo ./svc.sh install vagrant
 sudo ./svc.sh start
