@@ -5,28 +5,6 @@ A fully automated setup for CKA, CKAD, and CKS practice labs is tested on the fo
 
 - Windows
 - Ubuntu Desktop
-- Mac Intel-based systems
-
-If you are MAC Silicon user, Please use the following repo.
-
-- [Vagrant Kubeadm Setup on MAC Silicon](https://github.com/techiescamp/vagrant-kubeadm-mac-silicon)
-
-## Kubernetes Certification Voucher (UpTo 65% OFF - Cyber Monday Offer) 🎉
-
-As part of our commitment to helping the DevOps community save money on Kubernetes Certifications, we continuously update the latest voucher codes from the Linux Foundation
-
-🚀  CKA, CKAD, CKS, or KCNA exam aspirants can **save 50%** today using code **CYBER24CCTECHIES** at https://kube.promo/devops. It is a limited-time offer from the Linux Foundation.
-
-The following are the best bundles to **save upto 65% (up to $1087 savings)** with code **CYBER24BUNDLECT**
-
-- KCNA + KCSA + CKA + CKAD + CKS (65% - $1087 Savings): [kube.promo/kubestronaut](https://kube.promo/kubestronaut)
-- CKA + CKAD + CKS Exam bundle (63% - $747 Savings): [kube.promo/k8s-bundle](https://kube.promo/k8s-bundle)
-- CKA + CKS Bundle (63% - $500 Savings) [kube.promo/bundle](https://kube.promo/bundle)
-- KCNA + CKA (68% - $338 Savings) [kube.promo/kcka-bundle](https://kube.promo/kcna-cka)
-- KCSA + CKS Exam Bundle (64% - $407 Savings) [kube.promo/kcsa-cks](https://kube.promo/kcsa-cks)
-- KCNA + KCSA Exam Bundle (66% - $330 Savings) [kube.promo/kcna-kcsa](https://kube.promo/kcna-kcsa)
-
->Note: You have one year of validity to appear for the certification exam after registration
 
 ## Setup Prerequisites
 
@@ -41,8 +19,6 @@ Here is the high level workflow.
 
 ## Documentation
 
-Current k8s version for CKA, CKAD, and CKS exam: 1.30
-
 The setup is updated with 1.31 cluster version.
 
 Refer to this link for documentation full: https://devopscube.com/kubernetes-cluster-vagrant/
@@ -53,7 +29,7 @@ Refer to this link for documentation full: https://devopscube.com/kubernetes-clu
 1. Working Vagrant setup
 2. 8 Gig + RAM workstation as the Vms use 3 vCPUS and 4+ GB RAM
 
-## For MAC/Linux Users
+## For Linux Users
 
 The latest version of Virtualbox for Mac/Linux can cause issues.
 
@@ -70,15 +46,6 @@ echo "* 0.0.0.0/0 ::/0" | sudo tee -a /etc/vbox/networks.conf
 So that the host only networks can be in any range, not just 192.168.56.0/21 as described here:
 https://discuss.hashicorp.com/t/vagrant-2-2-18-osx-11-6-cannot-create-private-network/30984/23
 
-## Bring Up the Cluster
-
-To provision the cluster, execute the following commands.
-
-```shell
-git clone https://github.com/scriptcamp/vagrant-kubeadm-kubernetes.git
-cd vagrant-kubeadm-kubernetes
-vagrant up
-```
 ## Set Kubeconfig file variable
 
 ```shell
@@ -134,7 +101,7 @@ vagrant up
 ## To destroy the cluster,
 
 ```shell
-vagrant destroy -f
+vagrant destroy
 ```
 # Network graph
 
