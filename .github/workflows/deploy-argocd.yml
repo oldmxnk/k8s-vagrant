@@ -50,7 +50,7 @@ jobs:
         sleep 20  # Wait for the Argo CD to be fully up and running
     - name: Print Argo CD Access Information
       run: |
-        echo "Argo CD can be accessed at http://${LOCAL_IP}:32080"
-        echo "Password is as below:"
-        kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-  
+        ACD_PWD=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+        #echo "Argo CD can be accessed at http://${LOCAL_IP}:32080"
+        echo "Argo CD URL : http://localhost:8080"
+        echo "Argo CD Password : ${ACD_PWD}"
