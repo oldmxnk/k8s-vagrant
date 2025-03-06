@@ -29,11 +29,14 @@ Vagrant.configure("2") do |config|
   config.vm.define "controlplane" do |controlplane|
     controlplane.vm.hostname = "controlplane"
     controlplane.vm.network "private_network", ip: settings["network"]["control_ip"]
+    controlplane.vm.network "forwarded_port", guest: 32080, host: 8080, guest_ip: "10.0.0.10", host_ip: "127.0.0.1"
+
     if settings["shared_folders"]
       settings["shared_folders"].each do |shared_folder|
         controlplane.vm.synced_folder shared_folder["host_path"], shared_folder["vm_path"]
       end
     end
+
     controlplane.vm.provider "virtualbox" do |vb|
         vb.cpus = settings["nodes"]["control"]["cpu"]
         vb.memory = settings["nodes"]["control"]["memory"]
@@ -65,11 +68,13 @@ Vagrant.configure("2") do |config|
     config.vm.define "node0#{i}" do |node|
       node.vm.hostname = "node0#{i}"
       node.vm.network "private_network", ip: IP_NW + "#{IP_START + i}"
+
       if settings["shared_folders"]
         settings["shared_folders"].each do |shared_folder|
           node.vm.synced_folder shared_folder["host_path"], shared_folder["vm_path"]
         end
       end
+
       node.vm.provider "virtualbox" do |vb|
           vb.cpus = settings["nodes"]["workers"]["cpu"]
           vb.memory = settings["nodes"]["workers"]["memory"]
@@ -98,13 +103,15 @@ Vagrant.configure("2") do |config|
   config.vm.define "runner" do |runner|
     runner.vm.hostname = "runner"
     runner.vm.network "private_network", ip: settings["network"]["runner_ip"]
-    runner.vm.network "forwarded_port", guest: 8080, host: 8080, guest_ip: "10.0.0.50", host_ip: "127.0.0.1"
+    #runner.vm.network "forwarded_port", guest: 8080, host: 8080, guest_ip: "10.0.0.50", host_ip: "127.0.0.1"
     runner.vm.network "forwarded_port", guest: 8001, host: 8001, guest_ip: "10.0.0.50", host_ip: "127.0.0.1"
+
     if settings["shared_folders"]
       settings["shared_folders"].each do |shared_folder|
         runner.vm.synced_folder shared_folder["host_path"], shared_folder["vm_path"]
       end
     end
+
     runner.vm.provider "virtualbox" do |vb|
       vb.cpus = settings["nodes"]["runner"]["cpu"]
       vb.memory = settings["nodes"]["runner"]["memory"]
